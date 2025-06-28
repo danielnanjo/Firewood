@@ -380,35 +380,74 @@ cartModal.style.display = 'none';
 document.body.style.overflow = 'auto';
 }
 // Place order
-function placeOrder() {
+function placeOrder(e) {
+    if (e) e.preventDefault();
+
     const facebookPageId = '61575004317573'; // Your Facebook Page ID
 
     // Gather customer and order details
-    const customerName = document.getElementById('customerName').value;
-    const customerPhone = document.getElementById('customerPhone').value;
-    const customerEmail = document.getElementById('customerEmail').value;
-    const customerAddress = document.getElementById('customerAddress').value;
-    const customerNotes = document.getElementById('customerNotes').value;
+    const customerName = document.getElementById('customerName').value.trim();
+    const customerPhone = document.getElementById('customerPhone').value.trim();
+    const customerEmail = document.getElementById('customerEmail').value.trim();
+    const customerAddress = document.getElementById('customerAddress').value.trim();
+    const customerNotes = document.getElementById('customerNotes').value.trim();
 
-    let orderDetails = `Order Details:\n`;
-    cart.forEach(item => {
-        orderDetails += `${item.name} - ${item.quantity} x $${item.price}\n`;
-    });
+    // Validate
+    if (!customerName || !customerPhone || !customerEmail || !customerAddress) {
+        alert('Please fill out all required fields.');
+        return;
+    }
+    if (cart.length === 0) {
+        alert('Your cart is empty.');
+        return;
+    }
+
+    // Compose order details
+    let orderDetails = cart.map(item =>
+        `${item.name} - ${item.quantity} x $${item.price.toFixed(2)}`
+    ).join('\n');
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    orderDetails += `Total: $${totalPrice}`;
 
-    // Combine all details into one message
-    const message = `Name: ${customerName}\nPhone: ${customerPhone}\nEmail: ${customerEmail}\nAddress: ${customerAddress}\nNotes: ${customerNotes}\n${orderDetails}`;
+    const message = 
+`Order Details:
+${orderDetails}
+Total: $${totalPrice.toFixed(2)}
 
-    // Construct Messenger URL after message is defined
-    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
-    
-    // Open Messenger with the encoded message
-    window.open(messengerUrl, '_blank');
+Name: ${customerName}
+Phone: ${customerPhone}
+Email: ${customerEmail}
+Address: ${customerAddress}
+Notes: ${customerNotes}`;
 
-    // Clear the cart and notify the customer
-    cart = [];
-    alert('Messenger has been opened for you to place your order!');
+    // Send to Formspree
+    fetch('https://formspree.io/f/xyzjlajv', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: customerName,
+            phone: customerPhone,
+            email: customerEmail,
+            address: customerAddress,
+            notes: customerNotes,
+            order: orderDetails,
+            total: totalPrice
+        })
+    })
+    .then(response => {
+        // Open Messenger after successful submission
+        const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
+        window.open(messengerUrl, '_blank');
+
+        // Clear cart, reset form, notify user
+        cart = [];
+        updateCart();
+        document.getElementById('cartModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        alert('Order sent! Messenger has been opened for you to confirm.');
+    })
+    .catch(() => {
+        alert('There was an error submitting your order. Please try again.');
+    });
 }
 // Handle contact form submission
 function handleContactForm(e) {
