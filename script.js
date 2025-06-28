@@ -382,7 +382,6 @@ document.body.style.overflow = 'auto';
 // Place order
 function placeOrder() {
     const facebookPageId = '61575004317573'; // Your Facebook Page ID
-    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`; // Using m.me format
 
     // Gather customer and order details
     const customerName = document.getElementById('customerName').value;
@@ -401,6 +400,9 @@ function placeOrder() {
     // Combine all details into one message
     const message = `Name: ${customerName}\nPhone: ${customerPhone}\nEmail: ${customerEmail}\nAddress: ${customerAddress}\nNotes: ${customerNotes}\n${orderDetails}`;
 
+    // Construct Messenger URL after message is defined
+    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
+    
     // Open Messenger with the encoded message
     window.open(messengerUrl, '_blank');
 
