@@ -381,44 +381,32 @@ document.body.style.overflow = 'auto';
 }
 // Place order
 function placeOrder() {
-const name = document.getElementById('name').value;
-const phone = document.getElementById('phone').value;
-const email = document.getElementById('email').value;
-const address = document.getElementById('address').value;
-const notes = document.getElementById('notes').value;
-// Simple validation
-if (!name || !phone || !email || !address) {
-alert('Please fill in all required fields');
-return;
-}
-// Compose the message
-let message = `New Order from ${name}!\n\n`;
-message += `Contact Info:\nPhone: ${phone}\nEmail: ${email}\n\n`;
-message += `Delivery Address:\n${address}\n\n`;
-if (notes) {
-message += `Special Instructions:\n${notes}\n\n`;
-}
-message += "Order Details:\n";
-cart.forEach(item => {
-message += `- ${item.name} (Qty: ${item.quantity}) - $${(item.price *
-item.quantity).toFixed(2)}\n`;
-});
-const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-message += `\nTOTAL: $${total.toFixed(2)}`;
-// Encode the message for URL
-const encodedMessage = encodeURIComponent(message);
-// Create Facebook Messenger URL
-const facebookPageId = '61570253939100';
-const messengerUrl =
-`https://www.facebook.com/messages/t/${facebookPageId}?ref=website_order&text=${encodedMessage}`;
-// Open Messenger in a new tab
-window.open(messengerUrl, '_blank');
-// Reset cart and close modal
-cart = [];
-updateCart();
-closeCartModal();
-// Show confirmation
-alert('Thank you for your order! We have opened Facebook Messenger where you can send your order details. We will contact you shortly to finalize payment and delivery.');
+    const facebookPageId = '61575004317573'; // Your Facebook Page ID
+    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`; // Using m.me format
+
+    // Gather customer and order details
+    const customerName = document.getElementById('customerName').value;
+    const customerPhone = document.getElementById('customerPhone').value;
+    const customerEmail = document.getElementById('customerEmail').value;
+    const customerAddress = document.getElementById('customerAddress').value;
+    const customerNotes = document.getElementById('customerNotes').value;
+
+    let orderDetails = `Order Details:\n`;
+    cart.forEach(item => {
+        orderDetails += `${item.name} - ${item.quantity} x $${item.price}\n`;
+    });
+    const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    orderDetails += `Total: $${totalPrice}`;
+
+    // Combine all details into one message
+    const message = `Name: ${customerName}\nPhone: ${customerPhone}\nEmail: ${customerEmail}\nAddress: ${customerAddress}\nNotes: ${customerNotes}\n${orderDetails}`;
+
+    // Open Messenger with the encoded message
+    window.open(messengerUrl, '_blank');
+
+    // Clear the cart and notify the customer
+    cart = [];
+    alert('Messenger has been opened for you to place your order!');
 }
 // Handle contact form submission
 function handleContactForm(e) {
