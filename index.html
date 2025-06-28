@@ -266,11 +266,34 @@
         <h4>Complete Your Order</h4>
         <p>After placing your order, we'll contact you via Facebook Messenger to
           finalize payment and delivery details.</p>
-       <input type="text" id="name" name="name" required>
-<input type="tel" id="phone" name="phone" required>
-<input type="email" id="email" name="email" required>
-<textarea id="address" name="address" rows="3" required></textarea>
-<textarea id="notes" name="notes" rows="3"></textarea>
+      <div class="checkout-form">
+  <h4>Complete Your Order</h4>
+  <p>After placing your order, we'll contact you via Facebook Messenger to
+    finalize payment and delivery details.</p>
+  <form id="orderForm">
+    <div class="form-group">
+      <label for="customerName">Full Name <span style="color: red">*</span></label>
+      <input type="text" id="customerName" name="name" placeholder="Your full name" required>
+    </div>
+    <div class="form-group">
+      <label for="customerPhone">Phone Number <span style="color: red">*</span></label>
+      <input type="tel" id="customerPhone" name="phone" placeholder="e.g. 555-123-4567" required>
+    </div>
+    <div class="form-group">
+      <label for="customerEmail">Email Address <span style="color: red">*</span></label>
+      <input type="email" id="customerEmail" name="email" placeholder="you@email.com" required>
+    </div>
+    <div class="form-group">
+      <label for="customerAddress">Delivery Address <span style="color: red">*</span></label>
+      <textarea id="customerAddress" name="address" rows="3" placeholder="Street, City, ZIP" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="customerNotes">Special Instructions</label>
+      <textarea id="customerNotes" name="notes" rows="3" placeholder="Optional notes about your order"></textarea>
+    </div>
+    <button class="btn" id="placeOrder" type="submit">Place Order via Messenger</button>
+  </form>
+</div>
         </div>
         <button class="btn" id="placeOrder">Place Order via Messenger</button>
       </div>
