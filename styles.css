@@ -153,33 +153,83 @@ cursor: pointer;
 font-size: 24px;
 }
 /* Hero Section */
+/* Enhanced Hero Section */
 .hero {
-background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-url('https://images.unsplash.com/photo-1519681393784-d120267933ba') no-repeat center
-center/cover;
-height: 100vh;
-display: flex;
-align-items: center;
-color: var(--white);
-text-align: center;
-margin-top: 70px;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url('https://images.unsplash.com/photo-1519681393784-d120267933ba') no-repeat center
+    center/cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    margin-top: 70px;
+    position: relative;
+    overflow: hidden;
 }
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0,0,0,0.4) 20%, transparent 80%);
+    z-index: 1;
+}
+
 .hero-content {
-max-width: 800px;
-margin: 0 auto;
-padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    z-index: 2;
+    animation: slideInDown 1s ease-in-out;
 }
+
 .hero h2 {
-font-size: 3.5rem;
-margin-bottom: 20px;
-color: var(--white);
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    color: var(--white);
+    text-shadow: 2px 4px 6px rgba(0,0,0,0.8);
 }
+
 .hero p {
-font-size: 1.2rem;
-margin-bottom: 30px;
-max-width: 700px;
-margin-left: auto;
-margin-right: auto;
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--light);
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.8);
+}
+
+.hero .btn {
+    padding: 15px 40px;
+    background: var(--accent);
+    color: var(--white);
+    border-radius: 50px;
+    font-size: 18px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero .btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+/* Keyframe Animation */
+@keyframes slideInDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 /* Page Hero */
 .page-hero {
