@@ -383,7 +383,7 @@ document.body.style.overflow = 'auto';
 function placeOrder(e) {
     if (e) e.preventDefault();
 
-    const facebookPageId = '61570253939100'; // Updated Facebook Page ID
+    const facebookPageId = '61570253939100'; // Your Facebook Page ID
 
     // Gather customer and order details
     const customerName = document.getElementById('customerName').value.trim();
@@ -392,7 +392,7 @@ function placeOrder(e) {
     const customerAddress = document.getElementById('customerAddress').value.trim();
     const customerNotes = document.getElementById('customerNotes').value.trim();
 
-    // Validate
+    // Validate input fields
     if (!customerName || !customerPhone || !customerEmail || !customerAddress) {
         alert('Please fill out all required fields.');
         return;
@@ -403,13 +403,13 @@ function placeOrder(e) {
     }
 
     // Compose order details
-    let orderDetails = cart.map(item =>
+    const orderDetails = cart.map(item =>
         `${item.name} - ${item.quantity} x $${item.price.toFixed(2)}`
     ).join('\n');
     const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-    const message = 
-`Order Details:
+    const message = `
+Order Details:
 ${orderDetails}
 Total: $${totalPrice.toFixed(2)}
 
@@ -419,7 +419,7 @@ Email: ${customerEmail}
 Address: ${customerAddress}
 Notes: ${customerNotes}`;
 
-    // Open Messenger with the prepared message
+    // Open Messenger with the pre-filled message
     const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
     window.open(messengerUrl, '_blank');
 
