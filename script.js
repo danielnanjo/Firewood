@@ -383,7 +383,7 @@ document.body.style.overflow = 'auto';
 function placeOrder(e) {
     if (e) e.preventDefault();
 
-    const facebookPageId = '61575004317573'; // Your Facebook Page ID
+    const facebookPageId = '61570253939100'; // Updated Facebook Page ID
 
     // Gather customer and order details
     const customerName = document.getElementById('customerName').value.trim();
@@ -419,36 +419,18 @@ Email: ${customerEmail}
 Address: ${customerAddress}
 Notes: ${customerNotes}`;
 
-    // Send to Formspree
-    fetch('https://formspree.io/f/xyzjlajv', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            name: customerName,
-            phone: customerPhone,
-            email: customerEmail,
-            address: customerAddress,
-            notes: customerNotes,
-            order: orderDetails,
-            total: totalPrice
-        })
-    })
-    .then(response => {
-        // Open Messenger after successful submission
-        const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
-        window.open(messengerUrl, '_blank');
+    // Open Messenger with the prepared message
+    const messengerUrl = `https://m.me/${facebookPageId}?text=${encodeURIComponent(message)}`;
+    window.open(messengerUrl, '_blank');
 
-        // Clear cart, reset form, notify user
-        cart = [];
-        updateCart();
-        document.getElementById('cartModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        alert('Order sent! Messenger has been opened for you to confirm.');
-    })
-    .catch(() => {
-        alert('There was an error submitting your order. Please try again.');
-    });
+    // Clear cart, reset form, notify user
+    cart = [];
+    updateCart();
+    document.getElementById('cartModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+    alert('Order sent! Messenger has been opened for you to confirm.');
 }
+
 // Handle contact form submission
 function handleContactForm(e) {
 e.preventDefault();
